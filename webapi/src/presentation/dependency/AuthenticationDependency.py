@@ -1,13 +1,17 @@
 from src.application.usecase.AuthenticationUsecase import AuthenticationUsecase
-from src.application.usecase.v1.AuthenticationUsecaseImpl import AuthenticationUsecaseImpl as V1AuthenticationUsecaseImpl
-
+from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.postgresql.util.PsqlSessionBuilder import build_session
+from src.infrastructure.postgresql.repository.v1.AccountRepositoryImpl import AccountRepositoryImpl
 
 class AuthenticationDependency:
     
     @staticmethod
-    def v1_injection() -> AuthenticationUsecase:
-        return V1AuthenticationUsecaseImpl()
+    def _inject(rdb: RdbSessionClient) -> AuthenticationUsecase:
+        account_repository = AccountRepositoryImpl(rdb)
+        return AuthenticationUsecase(rdb, account_repository)
     
+
     @staticmethod
-    def v1() -> AuthenticationUsecase:
-        return AuthenticationDependency.v1_injection()
+    def depends() -> AuthenticationUsecase:
+        rdb = RdbSessionClient(session = build_session())
+        return AuthenticationDependency._inject(rdb)

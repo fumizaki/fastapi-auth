@@ -15,8 +15,8 @@ router = APIRouter(tags=["Authentication"], default_response_class=ORJSONRespons
     summary="アカウントの新規登録",
     status_code=status.HTTP_200_OK
 )
-async def signup(form: SignUpSchema, usecase: AuthenticationUsecase = Depends(AuthenticationDependency.v1)):
-    result: AccountEntity = usecase.signup_exec(form)
+async def signup(form: SignUpSchema, usecase: AuthenticationUsecase = Depends(AuthenticationDependency.depends)):
+    result: AccountEntity = usecase.v1_signup_exec(form)
     return ORJSONResponse(
             status_code=status.HTTP_200_OK,
             content=(result.model_dump())
