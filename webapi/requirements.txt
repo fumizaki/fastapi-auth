@@ -1,0 +1,18 @@
+# for environment
+python-dotenv
+# for type checking
+mypy
+# for testing
+pytest
+pytest-cov
+# for fastapi
+requests
+fastapi[all]
+gunicorn
+uvicorn[standard]
+# for rdb
+sqlalchemy
+alembic
+psycopg2-binary # for alembic using postgresql
+# for jwt 
+PyJWT
