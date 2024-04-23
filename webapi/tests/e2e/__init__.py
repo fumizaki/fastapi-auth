@@ -1,1 +1,1 @@
-# python -m pytest --cov --cov-branch -vs tests/e2e
+# docker exec -it -w /webapi webapi-auth pytest --cov --cov-branch -vs tests/e2e

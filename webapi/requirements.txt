@@ -5,14 +5,17 @@ mypy
 # for testing
 pytest
 pytest-cov
+pytest-asyncio
+pytest-mock
 # for fastapi
 requests
 fastapi[all]
 gunicorn
 uvicorn[standard]
 # for rdb
-sqlalchemy
+sqlalchemy[asyncio]
 alembic
 psycopg2-binary # for alembic using postgresql
+asyncpg # for postgres using async
 # for jwt 
 PyJWT

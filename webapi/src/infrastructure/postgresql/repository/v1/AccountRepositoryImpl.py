@@ -4,26 +4,28 @@ from sqlalchemy.engine.row import Row, Tuple
 from src.domain.v1.entity.AccountEntity import AccountEntity
 from src.domain.v1.type.AccountValueType import AccountId
 from src.domain.v1.repository.AccountRepository import AccountRepository
-from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.rdb.AsyncRdbSessionClient import AsyncRdbSessionClient
 from src.infrastructure.postgresql.model.v1.AccountTable import AccountTable
 
 
 class AccountRepositoryImpl(AccountRepository):
 
-    def __init__(self, rdb: RdbSessionClient) -> None:
+    def __init__(self, rdb: AsyncRdbSessionClient) -> None:
         self.rdb = rdb
 
-    def insert(self, entity: AccountEntity) -> AccountEntity:
+    async def insert(self, entity: AccountEntity) -> AccountEntity:
         self.rdb.session.add(AccountTable.to_table(entity))
-        self.rdb.session.flush()
-        _in_db: Optional[AccountEntity] = self.find_by_id(entity.id)
+        await self.rdb.session.flush()
+
+        _in_db: Optional[AccountEntity] = await self.find_by_id(entity.id)
         if _in_db is None:
             raise
+
         return _in_db
 
 
-    def find_by_id(self, id: AccountId) -> Optional[AccountEntity]:
-        result = self.rdb.session.execute(
+    async def find_by_id(self, id: AccountId) -> Optional[AccountEntity]:
+        result = await self.rdb.session.execute(
             select(
                 AccountTable
             )

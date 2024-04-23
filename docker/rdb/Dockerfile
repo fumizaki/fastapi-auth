@@ -5,6 +5,7 @@ ENV LANG js_JP.UTF-8
 ENV POSTGRES_DB rdb
 ENV POSTGRES_USER rdb
 ENV POSTGRES_PASSWORD rdb
+ENV POSTGRES_HOST_AUTH_METHOD trust
 
 # webserviceのmigrationツールで管理するため、コメントアウト
 # ADD ./rdb/init_sql/* /docker-entrypoint-initdb.d
