@@ -11,11 +11,10 @@ class AccountTable(CoreTable):
     category = Column(String, nullable=False)
     role = Column(String, nullable=False)
     email = Column(String, nullable=False)
-    password = Column(String, nullable=False)
 
     @staticmethod
-    def to_table(o: AccountEntity) -> AccountTable:
-        return AccountTable(**o.model_dump())
+    def to_table(entity: AccountEntity) -> AccountTable:
+        return AccountTable(**entity.model_dump())
     
     def to_entity(self) -> AccountEntity:
         return AccountEntity(**self.__dict__)

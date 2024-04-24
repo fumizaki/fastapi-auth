@@ -3,6 +3,7 @@ from typing import NewType
 
 
 AccountId = NewType('AccountId', str)
+AccountSecretId = NewType('AccountSecretId', str)
 AccountEmail = NewType('AccountEmail', str)
 AccountPassword = NewType('AccountPassword', str)
 

@@ -23,7 +23,7 @@ def build_session() -> Session:
     return session()
 
 
-# 要調査
+# TODO: 要調査
 def async_scopefunc():
     return f"coroutine-{uuid.uuid4()}"
 
@@ -36,6 +36,6 @@ def build_async_session() -> AsyncSession:
             bind = ASYNC_ENGINE,
             class_ = AsyncSession
             ),
-        scopefunc=async_scopefunc # 要調査
+        scopefunc=async_scopefunc # TODO: 要調査
         )
     return session()

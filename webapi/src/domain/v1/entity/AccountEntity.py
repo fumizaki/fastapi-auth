@@ -1,6 +1,6 @@
 import uuid
 from src.domain.core.entity.CoreEntity import CoreEntity
-from src.domain.v1.type.AccountValueType import AccountId, AccountEmail, AccountPassword, AccountCategoryType, AccountRoleType
+from src.domain.v1.type.AccountValueType import AccountId, AccountEmail, AccountCategoryType, AccountRoleType
 
 
 class AccountEntity(CoreEntity):
@@ -8,5 +8,4 @@ class AccountEntity(CoreEntity):
     category: AccountCategoryType = AccountCategoryType.APP
     role: AccountRoleType = AccountRoleType.GENERAL
     email: AccountEmail
-    password: AccountPassword
     

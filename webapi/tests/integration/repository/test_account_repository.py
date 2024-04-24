@@ -7,12 +7,12 @@ class NotImplementedRepository(AccountRepository):
     pass
 
 
-def test_account_repository_not_implemented():
+def test_repository_not_implemented():
     with pytest.raises(TypeError):
         NotImplementedRepository()
 
 
-def test_account_repository_abstract_method():
+def test_repository_abstract_method():
     
     with pytest.raises(NotImplementedError):
         AccountRepository.insert(AccountEntity(email = "", password = ""))
@@ -21,8 +21,20 @@ def test_account_repository_abstract_method():
         AccountRepository.find_by_id("")
 
 
-def test_account_repository_insert(rdb):
-    account_repository = AccountRepositoryImpl(rdb)
-    result = account_repository.insert(AccountEntity(email = "", password = ""))
+def test_repository_insert(rdb):
+    _repository = AccountRepositoryImpl(rdb)
+    result = _repository.insert(AccountEntity(email = "", password = ""))
     assert isinstance(result, AccountEntity)    
+
+
+@pytest.mark.parametrize(
+    "expected, id",
+    [
+        (None.__class__, ""),
+    ]
+)
+def test_repository_find_by_id(rdb, expected, id):
+    _repository = AccountRepositoryImpl(rdb)
+    result = _repository.find_by_id(id)
+    assert isinstance(result, expected)    
 

@@ -5,8 +5,8 @@ from alembic import context
 from src.infrastructure.postgresql.model.core.CoreTable import CoreTable
 from src.infrastructure.postgresql.util.PsqlConstant import *
 # テーブルに対応するモデルをインポート(全て手動で追加する)
-from src.infrastructure.postgresql.model.v1.AccountTable import (
-    AccountTable
+from src.infrastructure.postgresql.model.v1 import (
+    AccountTable, AccountSecretTable
 )
 
 # this is the Alembic Config object, which provides
