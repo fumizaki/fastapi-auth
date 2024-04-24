@@ -1,8 +1,8 @@
 import pytest
-from src.infrastructure.core.rdb.AsyncRdbSessionClient import AsyncRdbSessionClient
-from src.infrastructure.postgresql.util.PsqlSessionBuilder import build_async_session
+from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.postgresql.util.PsqlSessionBuilder import build_session
 
 
 @pytest.fixture
-def rdb() -> AsyncRdbSessionClient:
-    return AsyncRdbSessionClient(session = build_async_session())
+def rdb() -> RdbSessionClient:
+    return RdbSessionClient(session = build_session())

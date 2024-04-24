@@ -21,10 +21,8 @@ def test_account_repository_abstract_method():
         AccountRepository.find_by_id("")
 
 
-@pytest.mark.asyncio
-async def test_account_repository_insert(rdb):
+def test_account_repository_insert(rdb):
     account_repository = AccountRepositoryImpl(rdb)
-    result = await account_repository.insert(AccountEntity(email = "", password = ""))
-    # await rdb.session.close()
-    
+    result = account_repository.insert(AccountEntity(email = "", password = ""))
+    assert isinstance(result, AccountEntity)    
 
