@@ -5,6 +5,9 @@ from src.domain.v1.entity.AccountEntity import AccountEntity
 from src.domain.v1.type.AccountValueType import AccountId
 from src.domain.v1.repository.AccountRepository import AccountRepository
 from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.rdb.RdbException import (
+    RdbContraintError, RdbRecordNotFoundError
+)
 from src.infrastructure.postgresql.model.v1.AccountTable import AccountTable
 
 
@@ -19,7 +22,7 @@ class AccountRepositoryImpl(AccountRepository):
 
         _in_db: Optional[AccountEntity] = self.find_by_id(entity.id)
         if _in_db is None:
-            raise
+            raise RdbRecordNotFoundError
 
         return _in_db
 

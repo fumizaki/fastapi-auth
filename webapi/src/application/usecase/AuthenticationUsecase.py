@@ -5,6 +5,8 @@ from src.domain.v1.type.AccountValueType import AccountEmail, AccountPassword
 from src.domain.v1.repository.AccountRepository import AccountRepository
 from src.domain.v1.repository.AccountSecretRepository import AccountSecretRepository
 from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.hash.HashClient import HashClient
+
 
 class AuthenticationUsecase:
 
@@ -40,9 +42,13 @@ class AuthenticationUsecase:
             )
             account_in_db: AccountEntity = self.uow.account_repository.insert(account)
             
+            salt = HashClient.salt()
+            stretching = HashClient.stretching()
             account_secret = AccountSecretEntity(
                 account_id=account_in_db.id,
-                password=param.password
+                password=HashClient.hash(param.password, salt, stretching),
+                salt=salt,
+                stretching=stretching
             )
             
             account_secret_in_db: AccountSecretEntity = self.uow.account_secret_repository.insert(account_secret)

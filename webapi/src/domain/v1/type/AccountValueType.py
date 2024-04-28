@@ -6,6 +6,8 @@ AccountId = NewType('AccountId', str)
 AccountSecretId = NewType('AccountSecretId', str)
 AccountEmail = NewType('AccountEmail', str)
 AccountPassword = NewType('AccountPassword', str)
+AccountPasswordSalt = NewType('AccountPasswordSalt', str)
+AccountPasswordStretching = NewType('AccountPasswordStretching', int)
 
 class AccountCategoryType(str, Enum):
     APP = 'app'

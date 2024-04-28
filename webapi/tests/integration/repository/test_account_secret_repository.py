@@ -15,7 +15,7 @@ def test_repository_not_implemented():
 def test_repository_abstract_method():
     
     with pytest.raises(NotImplementedError):
-        AccountSecretRepository.insert(AccountSecretEntity(account_id = "", password = ""))
+        AccountSecretRepository.insert(AccountSecretEntity(account_id = "", password = "", salt="", stretching=10))
 
     with pytest.raises(NotImplementedError):
         AccountSecretRepository.find_by_id("")
@@ -23,7 +23,7 @@ def test_repository_abstract_method():
 
 def test_repository_insert(rdb):
     _repository = AccountSecretRepositoryImpl(rdb)
-    result = _repository.insert(AccountSecretEntity(account_id = "", password = ""))
+    result = _repository.insert(AccountSecretEntity(account_id = "", password = "", salt="", stretching=10))
     assert isinstance(result, AccountSecretEntity)    
 
 
