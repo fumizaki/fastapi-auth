@@ -5,18 +5,21 @@ from fastapi import HTTPException, status
 from src.infrastructure.core.auth.util.OAuth2Constant import *
 from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationToken, AuthorizationCode, Credential
 
-def _get_current_unixtime() -> int:
-    """
-    現在時刻のunixtime
-    """
-    return int(datetime.now().timestamp())
 
-
-def _get_future_unixtime(days: int = 1) -> int:
-    """
-    現在時刻からdaysで指定した日数を追加したunixtime
-    """
-    return int((datetime.now() + timedelta(days = days)).timestamp())
+def _get_unixtime(
+        weeks: float = 0,
+        days: float = 0,
+        hours: float = 0,
+        minutes: float = 0,
+        seconds: float = 0
+        ) -> int:
+    return int((datetime.now() + timedelta(
+        weeks = weeks,
+        days = days,
+        hours = hours,
+        minutes = minutes,
+        seconds = seconds
+        )).timestamp())
 
 
 
@@ -24,11 +27,11 @@ class OAuth2Client:
 
     @staticmethod
     def iat() -> int:
-        return _get_current_unixtime()
+        return _get_unixtime()
     
     @staticmethod
     def exp(days: int = 1) -> int:
-        return _get_future_unixtime(days = days)
+        return _get_unixtime(days = days)
     
     @staticmethod
     def iss() -> str:
@@ -40,7 +43,7 @@ class OAuth2Client:
     
     @staticmethod
     def is_effective(exp: int) -> bool:
-        return exp > _get_current_unixtime()
+        return exp > _get_unixtime()
     
 
     @staticmethod
