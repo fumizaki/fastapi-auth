@@ -1,6 +1,6 @@
 import pytest
-from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
-from src.infrastructure.core.rdb.AsyncRdbSessionClient import AsyncRdbSessionClient
+from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.rdb.util.AsyncRdbSessionClient import AsyncRdbSessionClient
 
 def test_session_init(session):
     rdb = RdbSessionClient(session)

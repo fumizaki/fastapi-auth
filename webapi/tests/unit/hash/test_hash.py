@@ -1,5 +1,5 @@
 import pytest
-from src.infrastructure.core.hash.HashClient import HashClient
+from src.infrastructure.core.hash.util.HashClient import HashClient
 
 
 

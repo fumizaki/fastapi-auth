@@ -1,5 +1,5 @@
 from src.application.usecase.AuthenticationUsecase import AuthenticationUsecase
-from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
 from src.infrastructure.postgresql.util.PsqlSessionBuilder import build_session
 from src.infrastructure.postgresql.repository.v1.AccountRepositoryImpl import AccountRepositoryImpl
 from src.infrastructure.postgresql.repository.v1.AccountSecretRepositoryImpl import AccountSecretRepositoryImpl

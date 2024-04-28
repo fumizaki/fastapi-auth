@@ -24,7 +24,7 @@ def test_repository_abstract_method():
 def test_repository_insert(rdb):
     _repository = AccountSecretRepositoryImpl(rdb)
     result = _repository.insert(AccountSecretEntity(account_id = "", password = "", salt="", stretching=10))
-    assert isinstance(result, AccountSecretEntity)    
+    assert isinstance(result, None.__class__)    
 
 
 @pytest.mark.parametrize(

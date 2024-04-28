@@ -1,5 +1,5 @@
 import pytest
-from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
 from src.infrastructure.postgresql.util.PsqlSessionBuilder import build_session
 
 

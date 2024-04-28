@@ -4,7 +4,7 @@ from sqlalchemy.engine.row import Row, Tuple
 from src.domain.v1.entity.AccountSecretEntity import AccountSecretEntity
 from src.domain.v1.type.AccountValueType import AccountId, AccountSecretId
 from src.domain.v1.repository.AccountSecretRepository import AccountSecretRepository
-from src.infrastructure.core.rdb.RdbSessionClient import RdbSessionClient
+from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
 from src.infrastructure.postgresql.model.v1.AccountSecretTable import AccountSecretTable
 
 
@@ -13,15 +13,10 @@ class AccountSecretRepositoryImpl(AccountSecretRepository):
     def __init__(self, rdb: RdbSessionClient) -> None:
         self.rdb = rdb
 
-    def insert(self, entity: AccountSecretEntity) -> AccountSecretEntity:
+    def insert(self, entity: AccountSecretEntity) -> None:
         self.rdb.session.add(AccountSecretTable.to_table(entity))
         self.rdb.session.flush()
 
-        _in_db: Optional[AccountSecretEntity] = self.find_by_id(entity.id)
-        if _in_db is None:
-            raise
-
-        return _in_db
 
 
     def find_by_id(self, id: AccountSecretId) -> Optional[AccountSecretEntity]:

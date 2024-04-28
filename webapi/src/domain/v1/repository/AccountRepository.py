@@ -6,7 +6,7 @@ from src.domain.v1.type.AccountValueType import AccountId
 class AccountRepository(ABC):
 
     @abstractmethod
-    def insert(entity: AccountEntity) -> AccountEntity:
+    def insert(entity: AccountEntity) -> None:
         raise NotImplementedError
     
     @abstractmethod
