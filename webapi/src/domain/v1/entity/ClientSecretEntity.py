@@ -1,12 +1,11 @@
 from src.domain.core.entity.CoreEntity import CoreEntity
 from src.domain.v1.type.ClientValueType import (
-    ApplicationId, SecretId,
+    ApplicationId,
     SecretTitle, SecretValue, SecretExpiresIn
 )
 
 
-class ClientApplicationEntity(CoreEntity):
-    id: SecretId
+class ClientSecretEntity(CoreEntity):
     application_id: ApplicationId
     title: SecretTitle
     secret: SecretValue

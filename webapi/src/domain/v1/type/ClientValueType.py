@@ -2,7 +2,7 @@ from typing import NewType
 from enum import Enum
 
 ApplicationId = NewType('ApplicationId', str)
-ApplicationName = NewType('ApplicationName', str)
+ApplicationTitle = NewType('ApplicationTitle', str)
 ApplicationScope = NewType('ApplicationScope', str)
 ApplicationRedirectUri = NewType('ApplicationRedirectUri', str)
 

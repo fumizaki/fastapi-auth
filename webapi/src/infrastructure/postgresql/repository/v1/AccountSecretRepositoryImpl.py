@@ -1,6 +1,7 @@
 from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.engine.row import Row, Tuple
+from src.domain.core.type.CoreValueType import RecordId
 from src.domain.v1.entity.AccountSecretEntity import AccountSecretEntity
 from src.domain.v1.type.AccountValueType import AccountId, AccountSecretId
 from src.domain.v1.repository.AccountSecretRepository import AccountSecretRepository
@@ -19,7 +20,7 @@ class AccountSecretRepositoryImpl(AccountSecretRepository):
 
 
 
-    def find_by_id(self, id: AccountSecretId) -> Optional[AccountSecretEntity]:
+    def find_by_id(self, id: RecordId) -> Optional[AccountSecretEntity]:
         result = self.rdb.session.execute(
             select(
                 AccountSecretTable
