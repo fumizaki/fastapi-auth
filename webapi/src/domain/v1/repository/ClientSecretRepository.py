@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from src.domain.core.type.CoreValueType import RecordId
 from src.domain.v1.entity.ClientSecretEntity import ClientSecretEntity
-from src.domain.v1.type.ClientValueType import ApplicationId, SecretId
+from src.domain.v1.type.ClientValueType import ApplicationId
 
 class ClientSecretRepository(ABC):
 
