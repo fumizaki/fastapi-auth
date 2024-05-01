@@ -1,5 +1,9 @@
 from fastapi import FastAPI
-from src.presentation.controller import AuthenticationController, ClientApplicationController, ClientSecretController
+from src.presentation.controller import (
+    AuthenticationController,
+    ClientApplicationController,
+    ClientSecretController
+)
 
 
 app = FastAPI()
