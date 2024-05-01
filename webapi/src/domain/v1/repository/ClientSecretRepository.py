@@ -15,7 +15,7 @@ class ClientSecretRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def find_by_application(application_id: ApplicationId) -> Optional[ClientSecretEntity]:
+    def find_list_by_application(application_id: ApplicationId) -> list[Optional[ClientSecretEntity]]:
         raise NotImplementedError
 
     

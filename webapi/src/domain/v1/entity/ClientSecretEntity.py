@@ -10,3 +10,7 @@ class ClientSecretEntity(CoreEntity):
     title: SecretTitle
     secret: SecretValue
     expires_in: SecretExpiresIn
+    
+    
+    def mask_secret(self) -> None:
+        self.secret = "******************************"

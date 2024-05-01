@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Sequence
 from sqlalchemy import select
 from sqlalchemy.engine.row import Row, Tuple
 from src.domain.core.type.CoreValueType import RecordId
@@ -42,7 +42,7 @@ class ClientSecretRepositoryImpl(ClientSecretRepository):
     
     
     
-    def find_by_application(self, application_id: ApplicationId) -> Optional[ClientSecretEntity]:
+    def find_list_by_application(self, application_id: ApplicationId) -> list[Optional[ClientSecretEntity]]:
         result = self.rdb.session.execute(
             select(
                 ClientSecretTable
@@ -51,11 +51,10 @@ class ClientSecretRepositoryImpl(ClientSecretRepository):
                 ClientSecretTable.application_id == application_id
             )
         )
-        row: Optional[Row[Tuple[ClientSecretTable]]] = result.one_or_none()
+        rows: Sequence[Row[Tuple[ClientSecretTable]]] = result.all()
         
-        if row is None:
-            return
+        if len(rows) == 0:
+            return []
         
-        _in_db: ClientSecretTable = row[0]
 
-        return _in_db.to_entity()
+        return [row[0].to_entity() for row in rows]

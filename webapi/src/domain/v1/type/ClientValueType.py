@@ -17,5 +17,5 @@ class SecretExpiresDaysType(int, Enum):
     ONE_MONTH = 30
     QUATER = 90
     SIX_MONTH = 180
-    YEAR = 365
-    NO_EXPIRATION = 999999999
+    ONE_YEAR = 365
+    NO_EXPIRATION = 99999999999

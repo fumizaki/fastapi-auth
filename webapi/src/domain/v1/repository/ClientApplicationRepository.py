@@ -11,6 +11,10 @@ class ClientApplicationRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
+    def find_list() -> list[Optional[ClientApplicationEntity]]:
+        raise NotImplementedError
+    
+    @abstractmethod
     def find_by_id(id: RecordId) -> Optional[ClientApplicationEntity]:
         raise NotImplementedError
 

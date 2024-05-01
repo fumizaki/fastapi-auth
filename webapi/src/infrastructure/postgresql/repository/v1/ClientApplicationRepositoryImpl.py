@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Sequence
 from sqlalchemy import select
 from sqlalchemy.engine.row import Row, Tuple
 from src.domain.core.type.CoreValueType import RecordId
@@ -19,6 +19,20 @@ class ClientApplicationRepositoryImpl(ClientApplicationRepository):
     def insert(self, entity: ClientApplicationEntity) -> None:
         self.rdb.session.add(ClientApplicationTable.to_table(entity))
         self.rdb.session.flush()
+        
+        
+    def find_list(self) -> list[ClientApplicationEntity]:
+        result = self.rdb.session.execute(
+            select(
+                ClientApplicationTable
+            )
+        )
+        rows: Sequence[Row[Tuple[ClientApplicationTable]]] = result.all()
+        
+        if len(rows) == 0:
+            return []
+
+        return [row[0].to_entity() for row in rows]
 
 
     def find_by_id(self, id: RecordId) -> Optional[ClientApplicationEntity]:
