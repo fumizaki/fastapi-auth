@@ -18,6 +18,9 @@ def test_repository_abstract_method():
         ClientApplicationRepository.insert(ClientApplicationEntity(name = "", scope = "", redirect_uri = ""))
 
     with pytest.raises(NotImplementedError):
+        ClientApplicationRepository.find_list()
+
+    with pytest.raises(NotImplementedError):
         ClientApplicationRepository.find_by_id("")
 
   

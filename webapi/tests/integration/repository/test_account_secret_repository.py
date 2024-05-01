@@ -20,6 +20,9 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         AccountSecretRepository.find_by_id("")
 
+    with pytest.raises(NotImplementedError):
+        AccountSecretRepository.find_by_account("")
+
 
 def test_repository_insert(rdb):
     _repository = AccountSecretRepositoryImpl(rdb)

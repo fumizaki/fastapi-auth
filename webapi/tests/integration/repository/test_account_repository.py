@@ -20,6 +20,9 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         AccountRepository.find_by_id("")
 
+    with pytest.raises(NotImplementedError):
+        AccountRepository.find_by_email("")
+
 
 def test_repository_insert(rdb):
     _repository = AccountRepositoryImpl(rdb)

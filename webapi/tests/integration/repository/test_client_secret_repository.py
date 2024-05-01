@@ -20,5 +20,10 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         ClientSecretRepository.find_by_id("")
 
+    with pytest.raises(NotImplementedError):
+        ClientSecretRepository.find_list_by_application("")
+
+    
+
   
 

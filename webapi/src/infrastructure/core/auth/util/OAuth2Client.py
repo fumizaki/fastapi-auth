@@ -149,22 +149,14 @@ class OAuth2Client:
     def verify(required_scopes: list[str], token: str) -> Credential:
         payload: AuthorizationToken = OAuth2Client.decode_authorization_token(token)
 
-        if payload.iss != OAuth2Client.iss():
-            raise
-
-
-        if payload.aud != OAuth2Client.aud():
-            raise
-
-
         if not OAuth2Client.is_effective(payload.exp):
-            raise
+            raise ValueError("expirationが不正です")
 
 
         if len(required_scopes) > 0 and payload.scope:
             scopes = payload.scope.split(",")
             if not OAuth2Client.has_required_scope(scopes, required_scopes):
-                raise
+                raise ValueError("scopeが不正です")
 
         return Credential(
             account_id=payload.sub,
