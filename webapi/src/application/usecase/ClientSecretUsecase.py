@@ -4,6 +4,7 @@ from src.domain.v1.type.ClientValueType import ApplicationId
 from src.domain.v1.entity.ClientSecretEntity import ClientSecretEntity
 from src.domain.v1.schema.ClientSecretSchema import CreateClientSecretSchema
 from src.domain.v1.repository.ClientSecretRepository import ClientSecretRepository
+from src.infrastructure.core.auth.model.OAuth2Model import Credential
 from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
 from src.infrastructure.core.rdb.exception.RdbException import RdbContraintError
 
@@ -22,9 +23,11 @@ class ClientSecretUsecase:
 
     def __init__(
         self,
+        credential: Credential,
         rdb: RdbSessionClient,
         client_secret_repository: ClientSecretRepository
     ) -> None:
+        self.credential = credential
         self.uow = self.UnitOfWork(
             rdb,
             client_secret_repository

@@ -3,6 +3,7 @@ from src.domain.core.type.CoreValueType import RecordId
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity
 from src.domain.v1.schema.ClientApplicationSchema import CreateClientApplicationSchema
 from src.domain.v1.repository.ClientApplicationRepository import ClientApplicationRepository
+from src.infrastructure.core.auth.model.OAuth2Model import Credential
 from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
 from src.infrastructure.core.rdb.exception.RdbException import RdbContraintError
 
@@ -21,9 +22,11 @@ class ClientApplicationUsecase:
 
     def __init__(
         self,
+        credential: Credential,
         rdb: RdbSessionClient,
         client_application_repository: ClientApplicationRepository
     ) -> None:
+        self.credential = credential
         self.uow = self.UnitOfWork(
             rdb,
             client_application_repository

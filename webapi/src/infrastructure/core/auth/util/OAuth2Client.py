@@ -146,7 +146,7 @@ class OAuth2Client:
 
     
     @staticmethod
-    def verify(required_scopes: Optional[list[str]], token: str) -> Credential:
+    def verify(required_scopes: list[str], token: str) -> Credential:
         payload: AuthorizationToken = OAuth2Client.decode_authorization_token(token)
 
         if payload.iss != OAuth2Client.iss():
@@ -161,7 +161,7 @@ class OAuth2Client:
             raise
 
 
-        if required_scopes and payload.scope:
+        if len(required_scopes) > 0 and payload.scope:
             scopes = payload.scope.split(",")
             if not OAuth2Client.has_required_scope(scopes, required_scopes):
                 raise
