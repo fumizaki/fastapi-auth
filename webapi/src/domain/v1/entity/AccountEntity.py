@@ -4,7 +4,7 @@ from src.domain.v1.type.AccountValueType import AccountEmail, AccountCategoryTyp
 
 
 class AccountEntity(CoreEntity):
-    category: AccountCategoryType = AccountCategoryType.APP
+    category: AccountCategoryType = AccountCategoryType.ACCOUNT
     role: AccountRoleType = AccountRoleType.GENERAL
     email: AccountEmail
     

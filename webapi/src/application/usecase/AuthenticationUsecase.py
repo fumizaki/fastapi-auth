@@ -99,8 +99,8 @@ class AuthenticationUsecase:
             if account_in_db is None:
                 raise Exception("Account not found")
             
-            if account_in_db.category != AccountCategoryType.APP:
-                raise Exception(f"Account is not {AccountCategoryType.APP}")
+            if account_in_db.category == AccountCategoryType.OAUTH:
+                raise Exception(f"Account is {AccountCategoryType.OAUTH}")
             
             account_secret: Optional[AccountSecretEntity] = self.uow.account_secret_repository.find_by_account(account_in_db.id)
         

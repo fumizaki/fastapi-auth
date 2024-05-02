@@ -5,7 +5,7 @@ from src.domain.v1.type.AccountValueType import (
 )
 
 
-class AuthorizationToken(BaseModel):
+class AuthorizationTokenProps(BaseModel):
     sub: str
     iss: str
     aud: str
@@ -16,10 +16,10 @@ class AuthorizationToken(BaseModel):
     nonce: Optional[str] = None
 
 
-class AuthorizationCode(BaseModel):
+class AuthorizationCodeProps(BaseModel):
     code: str
     client_id: str
-    state: str
+    state: Optional[str] = None
     scope: Optional[str] = None
 
 

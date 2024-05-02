@@ -1,6 +1,8 @@
 from typing import Optional
 from src.domain.core.type.CoreValueType import RecordId
+from src.domain.v1.type.ClientValueType import ApplicationRoleType
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity
+from src.domain.v1.entity.ClientApplicationMemberEntity import ClientApplicationMemberEntity
 from src.domain.v1.schema.ClientApplicationSchema import CreateClientApplicationSchema
 from src.domain.v1.repository.ClientApplicationRepository import ClientApplicationRepository
 from src.infrastructure.core.auth.model.OAuth2Model import Credential
@@ -75,6 +77,12 @@ class ClientApplicationUsecase:
             client_application_id = _insert_client_application(client_application)
               
             self.uow.rdb.commit()
+            
+            client_application_member = ClientApplicationMemberEntity(
+                application_id=client_application_id,
+                account_id=self.credential.account_id,
+                role=ApplicationRoleType.OWNER
+            )
             
             # TODO: sessionのcloseが必要かどうか確認
             return self.v1_get_client_application_exec(client_application_id)

@@ -1,6 +1,6 @@
 import pytest
 from src.infrastructure.core.auth.util.OAuth2Client import OAuth2Client
-from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationToken, AuthorizationCode, Credential
+from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps, AuthorizationCodeProps, Credential
 
 
 @pytest.mark.parametrize(
@@ -32,7 +32,7 @@ def test_has_required_scope(expected, scopes, required_scopes):
 
 
 def test_authorization_token():
-    param = AuthorizationToken(
+    param = AuthorizationTokenProps(
         sub="",
         iss=OAuth2Client.iss(),
         aud=OAuth2Client.aud(),
@@ -43,11 +43,11 @@ def test_authorization_token():
     assert isinstance(token, str)
 
     result = OAuth2Client.decode_authorization_token(token)
-    assert isinstance(result, AuthorizationToken)
+    assert isinstance(result, AuthorizationTokenProps)
 
 
 def test_authorization_code():
-    param = AuthorizationCode(
+    param = AuthorizationCodeProps(
         code="",
         client_id="",
         state=""
@@ -56,7 +56,7 @@ def test_authorization_code():
     assert isinstance(code, str)
 
     result = OAuth2Client.decode_authorization_code(code)
-    assert isinstance(result, AuthorizationCode)
+    assert isinstance(result, AuthorizationCodeProps)
 
 
 @pytest.mark.parametrize(
@@ -67,7 +67,7 @@ def test_authorization_code():
     ]
 )
 def test_verify(sub, iss, aud, exp, iat, scope, jti, nonce, required_scopes):
-    param = AuthorizationToken(
+    param = AuthorizationTokenProps(
         sub=sub,
         iss=iss,
         aud=aud,
@@ -91,7 +91,7 @@ def test_verify(sub, iss, aud, exp, iat, scope, jti, nonce, required_scopes):
     ]
 )
 def test_verify_failed(exception, sub, iss, aud, exp, iat, scope, jti, nonce, required_scopes):
-    param = AuthorizationToken(
+    param = AuthorizationTokenProps(
         sub=sub,
         iss=iss,
         aud=aud,

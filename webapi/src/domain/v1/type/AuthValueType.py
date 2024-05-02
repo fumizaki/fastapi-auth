@@ -1,5 +1,10 @@
 from enum import Enum
+from typing import NewType
 
+AuthorizationState = NewType('AuthorizationState', str)
+AuthorizationCode = NewType('AuthorizationCode', str)
+AuthorizationToken = NewType('AuthorizationToken', str)
+AuthorizationCodeChallenge = NewType('AuthorizationCodeChallenge', str)
 
 class AuthResponseType(str, Enum):
     CODE = 'code'

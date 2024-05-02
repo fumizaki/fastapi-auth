@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import jwt
 from fastapi import HTTPException, status
 from src.infrastructure.core.auth.util.OAuth2Constant import *
-from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationToken, AuthorizationCode, Credential
+from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps, AuthorizationCodeProps, Credential
 
 
 def _get_unixtime(
@@ -61,7 +61,7 @@ class OAuth2Client:
 
     @staticmethod
     def create_authorization_token(
-        param: AuthorizationToken,
+        param: AuthorizationTokenProps,
         key: str = OAUTH2_TOKEN_SECRET,
         alg: str = OAUTH2_TOKEN_ALGORITHM
     ) -> str:
@@ -81,7 +81,7 @@ class OAuth2Client:
         token: str,
         key: str = OAUTH2_TOKEN_SECRET,
         alg: str = OAUTH2_TOKEN_ALGORITHM
-    ) -> AuthorizationToken:
+    ) -> AuthorizationTokenProps:
         try:
             param = jwt.decode(
                 token,
@@ -91,7 +91,7 @@ class OAuth2Client:
                 algorithms=[alg]
             )
 
-            return AuthorizationToken(
+            return AuthorizationTokenProps(
                 sub=param['sub'],
                 iss=param['iss'],
                 aud=param['aud'],
@@ -108,7 +108,7 @@ class OAuth2Client:
 
     @staticmethod
     def create_authorization_code(
-        param: AuthorizationCode,
+        param: AuthorizationCodeProps,
         key: str = OAUTH2_CODE_SECRET,
         alg: str = OAUTH2_CODE_ALGORITHM
     ) -> str:
@@ -128,14 +128,14 @@ class OAuth2Client:
         code: str,
         key: str = OAUTH2_CODE_SECRET,
         alg: str = OAUTH2_CODE_ALGORITHM
-    ) -> AuthorizationCode:
+    ) -> AuthorizationCodeProps:
         try:
             param = jwt.decode(
                 code,
                 key,
                 algorithms=[alg]
             )
-            return AuthorizationCode(
+            return AuthorizationCodeProps(
                 code=param['code'],
                 client_id=param['client_id'],
                 state=param['state'],
@@ -147,7 +147,7 @@ class OAuth2Client:
     
     @staticmethod
     def verify(required_scopes: list[str], token: str) -> Credential:
-        payload: AuthorizationToken = OAuth2Client.decode_authorization_token(token)
+        payload: AuthorizationTokenProps = OAuth2Client.decode_authorization_token(token)
 
         if not OAuth2Client.is_effective(payload.exp):
             raise ValueError("expirationが不正です")
