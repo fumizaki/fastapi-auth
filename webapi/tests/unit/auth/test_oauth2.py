@@ -1,6 +1,6 @@
 import pytest
 from src.infrastructure.core.auth.util.OAuth2Client import OAuth2Client
-from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps, AuthorizationCodeProps, Credential
+from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps, Credential
 
 
 @pytest.mark.parametrize(
@@ -44,19 +44,6 @@ def test_authorization_token():
 
     result = OAuth2Client.decode_authorization_token(token)
     assert isinstance(result, AuthorizationTokenProps)
-
-
-def test_authorization_code():
-    param = AuthorizationCodeProps(
-        code="",
-        client_id="",
-        state=""
-    )
-    code = OAuth2Client.create_authorization_code(param)
-    assert isinstance(code, str)
-
-    result = OAuth2Client.decode_authorization_code(code)
-    assert isinstance(result, AuthorizationCodeProps)
 
 
 @pytest.mark.parametrize(

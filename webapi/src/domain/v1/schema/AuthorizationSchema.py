@@ -27,11 +27,11 @@ class AuthorizeResponseSchema(CoreSchema):
     
     
 class TokenRequestSchema(CoreSchema):
+    account_id: AccountId
     client_id: ApplicationId
     client_secret: SecretValue
     grant_type: AuthGrantType
     code: AuthorizationCode
-    scope: Optional[ApplicationScope] = None
     
     
 class TokenResponseSchema(CoreSchema):
@@ -47,7 +47,6 @@ class TokenRefreshRequestSchema(CoreSchema):
     client_secret: SecretValue
     grant_type: AuthGrantType
     refresh_token: AuthorizationToken
-    scope: Optional[ApplicationScope] = None
     
     
 class TokenIntrospectRequestSchema(CoreSchema):

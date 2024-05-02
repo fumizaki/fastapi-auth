@@ -17,13 +17,6 @@ class AuthorizationTokenProps(BaseModel):
     nonce: Optional[str] = None
 
 
-class AuthorizationCodeProps(BaseModel):
-    code: str = str(uuid.uuid4())
-    client_id: str
-    state: Optional[str] = None
-    scope: Optional[str] = None
-
-
 class Credential(BaseModel):
     account_id: AccountId
     scope: Optional[str] = None

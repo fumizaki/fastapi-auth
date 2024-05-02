@@ -2,7 +2,7 @@ from typing import Optional, Sequence
 from sqlalchemy import select
 from sqlalchemy.engine.row import Row, Tuple
 from src.domain.core.type.CoreValueType import RecordId
-from src.domain.v1.type.ClientValueType import ApplicationId
+from src.domain.v1.type.ClientValueType import ApplicationId, SecretValue
 from src.domain.v1.entity.ClientSecretEntity import ClientSecretEntity
 from src.domain.v1.repository.ClientSecretRepository import ClientSecretRepository
 from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
@@ -29,6 +29,25 @@ class ClientSecretRepositoryImpl(ClientSecretRepository):
             )
             .filter(
                 ClientSecretTable.id == id
+            )
+        )
+        row: Optional[Row[Tuple[ClientSecretTable]]] = result.one_or_none()
+        
+        if row is None:
+            return
+        
+        _in_db: ClientSecretTable = row[0]
+
+        return _in_db.to_entity()
+    
+
+    def find_by_secret(self, secret: SecretValue) -> Optional[ClientSecretEntity]:
+        result = self.rdb.session.execute(
+            select(
+                ClientSecretTable
+            )
+            .filter(
+                ClientSecretTable.secret == secret
             )
         )
         row: Optional[Row[Tuple[ClientSecretTable]]] = result.one_or_none()

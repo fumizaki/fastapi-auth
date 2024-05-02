@@ -1,9 +1,8 @@
-from typing import Optional
 from datetime import datetime, timedelta
 import jwt
 from fastapi import HTTPException, status
 from src.infrastructure.core.auth.util.OAuth2Constant import *
-from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps, AuthorizationCodeProps, Credential
+from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps, Credential
 
 
 def _get_unixtime(
@@ -104,46 +103,6 @@ class OAuth2Client:
 
         except:
             raise
-    
-
-    @staticmethod
-    def create_authorization_code(
-        param: AuthorizationCodeProps,
-        key: str = OAUTH2_CODE_SECRET,
-        alg: str = OAUTH2_CODE_ALGORITHM
-    ) -> str:
-        try:
-            return jwt.encode(
-                payload=param.model_dump(),
-                key=key,
-                algorithm=alg
-            )
-
-        except:
-            raise
-    
-
-    @staticmethod
-    def decode_authorization_code(
-        code: str,
-        key: str = OAUTH2_CODE_SECRET,
-        alg: str = OAUTH2_CODE_ALGORITHM
-    ) -> AuthorizationCodeProps:
-        try:
-            param = jwt.decode(
-                code,
-                key,
-                algorithms=[alg]
-            )
-            return AuthorizationCodeProps(
-                code=param['code'],
-                client_id=param['client_id'],
-                state=param['state'],
-                scope=param['scope']
-            )
-        except:
-            raise
-
     
     @staticmethod
     def verify(required_scopes: list[str], token: str) -> Credential:
