@@ -9,6 +9,7 @@ from src.domain.v1.type.ClientValueType import (
     ApplicationId, ApplicationScope, ApplicationRedirectUri,
     SecretValue, SecretExpiresIn
 )
+from src.domain.v1.type.AccountValueType import AccountId
 
 
 class AuthorizeRequestSchema(CoreSchema):
@@ -37,6 +38,29 @@ class TokenResponseSchema(CoreSchema):
     access_token: AuthorizationToken
     expires_in: SecretExpiresIn
     refresh_token: AuthorizationToken
+    token_type: TokenType
+    scope: Optional[ApplicationScope] = None
+    
+
+class TokenRefreshRequestSchema(CoreSchema):
+    client_id: ApplicationId
+    client_secret: SecretValue
+    grant_type: AuthGrantType
+    refresh_token: AuthorizationToken
+    scope: Optional[ApplicationScope] = None
+    
+    
+class TokenIntrospectRequestSchema(CoreSchema):
+    client_id: ApplicationId
+    client_secret: SecretValue
+    token: AuthorizationToken
+    token_type: TokenType
+    grant_type: AuthGrantType
+    
+    
+class TokenIntrospectResponseSchema(CoreSchema):
+    subject: AccountId
+    client_id: ApplicationId
     token_type: TokenType
     scope: Optional[ApplicationScope] = None
     

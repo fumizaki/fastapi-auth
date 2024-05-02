@@ -1,3 +1,4 @@
+import uuid
 from typing import Optional
 from pydantic import BaseModel
 from src.domain.v1.type.AccountValueType import (
@@ -17,7 +18,7 @@ class AuthorizationTokenProps(BaseModel):
 
 
 class AuthorizationCodeProps(BaseModel):
-    code: str
+    code: str = str(uuid.uuid4())
     client_id: str
     state: Optional[str] = None
     scope: Optional[str] = None
