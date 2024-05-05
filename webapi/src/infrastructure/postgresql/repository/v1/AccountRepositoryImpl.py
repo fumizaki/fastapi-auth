@@ -10,7 +10,7 @@ from src.infrastructure.core.rdb.exception.RdbException import (
     RdbContraintError, RdbRecordNotFoundError
 )
 from src.infrastructure.postgresql.model.v1.AccountTable import AccountTable
-from webapi.src.domain.v1.type.AccountValueType import AccountEmail
+from src.domain.v1.type.AccountValueType import AccountEmail
 
 
 class AccountRepositoryImpl(AccountRepository):
@@ -42,7 +42,7 @@ class AccountRepositoryImpl(AccountRepository):
         return _in_db.to_entity()
     
     
-    def find_by_email(self, email: AccountEmail) -> AccountEntity | None:
+    def find_by_email(self, email: AccountEmail) -> Optional[AccountEntity]:
         result = self.rdb.session.execute(
             select(
                 AccountTable

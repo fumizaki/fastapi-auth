@@ -20,7 +20,7 @@ router = APIRouter(tags=["ClientApplication"], default_response_class=ORJSONResp
     summary="クライアントアプリケーションの一覧取得",
     status_code=status.HTTP_200_OK
 )
-async def v1_list_client_application(usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)):
+async def v1_list_client_application(usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)) -> ORJSONResponse:
     results: list[Optional[ClientApplicationEntity]] = usecase.v1_list_client_application_exec()
     return ORJSONResponse(
             status_code=status.HTTP_200_OK,
@@ -33,7 +33,7 @@ async def v1_list_client_application(usecase: ClientApplicationUsecase = Depends
     summary="クライアントアプリケーションの取得",
     status_code=status.HTTP_200_OK
 )
-async def v1_get_client_application(id: RecordId, usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)):
+async def v1_get_client_application(id: RecordId, usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)) -> ORJSONResponse:
     result: ClientApplicationEntity = usecase.v1_get_client_application_exec(id)
     return ORJSONResponse(
             status_code=status.HTTP_200_OK,
@@ -46,7 +46,7 @@ async def v1_get_client_application(id: RecordId, usecase: ClientApplicationUsec
     summary="クライアントアプリケーションの新規作成",
     status_code=status.HTTP_200_OK
 )
-async def v1_create_client_application(form: CreateClientApplicationSchema, usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)):
+async def v1_create_client_application(form: CreateClientApplicationSchema, usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)) -> ORJSONResponse:
     result: ClientApplicationEntity = usecase.v1_create_client_application_exec(form)
     return ORJSONResponse(
             status_code=status.HTTP_200_OK,

@@ -19,7 +19,7 @@ router = APIRouter(tags=["ClientSecret"], default_response_class=ORJSONResponse)
     summary="クライアントシークレットの取得",
     status_code=status.HTTP_200_OK
 )
-async def v1_list_client_secret_linked_to_application(application_id: ApplicationId, usecase: ClientSecretUsecase = Depends(ClientSecretDependency.depends)):
+async def v1_list_client_secret_linked_to_application(application_id: ApplicationId, usecase: ClientSecretUsecase = Depends(ClientSecretDependency.depends)) -> ORJSONResponse:
     results: list[Optional[ClientSecretEntity]] = usecase.v1_list_client_secret_linked_to_application_exec(application_id)
     return ORJSONResponse(
             status_code=status.HTTP_200_OK,
@@ -31,7 +31,7 @@ async def v1_list_client_secret_linked_to_application(application_id: Applicatio
     summary="クライアントシークレットの新規作成",
     status_code=status.HTTP_200_OK
 )
-async def v1_create_client_secret(form: CreateClientSecretSchema, usecase: ClientSecretUsecase = Depends(ClientSecretDependency.depends)):
+async def v1_create_client_secret(form: CreateClientSecretSchema, usecase: ClientSecretUsecase = Depends(ClientSecretDependency.depends)) -> ORJSONResponse:
     result: ClientSecretEntity = usecase.v1_create_client_secret_exec(form)
     return ORJSONResponse(
             status_code=status.HTTP_200_OK,
