@@ -159,15 +159,103 @@ class AuthorizationUsecase:
     
     def v1_token_refresh_exec(self, param: TokenRefreshRequestSchema) -> TokenResponseSchema:
         try:
-            pass
-        
+            if param.grant_type != AuthGrantType.REFRESH_TOKEN:
+                raise
+
+            client_application_in_db: Optional[ClientApplicationEntity] = self.uow.client_application_repository.find_by_id(param.client_id)
+            if client_application_in_db is None:
+                raise
+
+            client_secret_in_db: Optional[ClientSecretEntity] = self.uow.client_secret_repository.find_by_secret(param.client_secret)
+            if client_secret_in_db is None:
+                raise
+
+            if not OAuth2Client.is_effective(client_secret_in_db.expires_in):
+                raise
+
+            payload: AuthorizationTokenProps = OAuth2Client.decode_authorization_token(param.refresh_token)
+
+            if not OAuth2Client.is_effective(payload.exp):
+                raise
+
+            if payload.scope:
+                scopes: list[str] = payload.scope.split(",")
+                if not OAuth2Client.has_required_scope(scopes, client_application_in_db.scope):
+                    raise
+
+            client_application_member_in_db: Optional[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_by_application_and_account(param.client_id, payload.sub)
+            if client_application_member_in_db is None:
+                raise
+
+            expires_in = OAuth2Client.exp()
+            access_token: str = OAuth2Client.create_authorization_token(
+                AuthorizationTokenProps(
+                    sub=client_application_member_in_db.account_id,
+                    iss=OAuth2Client.iss(),
+                    aud=OAuth2Client.aud(),
+                    iat=OAuth2Client.iat(),
+                    exp=expires_in,
+                    scope=payload.scope
+                )
+            )
+            refresh_expires_in = OAuth2Client.exp(30)
+            refresh_token: str = OAuth2Client.create_authorization_token(
+                AuthorizationTokenProps(
+                    sub=client_application_member_in_db.account_id,
+                    iss=OAuth2Client.iss(),
+                    aud=OAuth2Client.aud(),
+                    iat=OAuth2Client.iat(),
+                    exp=refresh_expires_in,
+                    scope=payload.scope
+                )
+            )
+
+            return TokenResponseSchema(
+                access_token=access_token,
+                expires_in=expires_in,
+                refresh_token=refresh_token,
+                token_type=TokenType.BEARER,
+                scope=payload.scope
+            )
+
         finally:
             self.uow.rdb.close()
     
     
     def v1_token_introspect_exec(self, param: TokenIntrospectRequestSchema) -> TokenIntrospectResponseSchema:
         try:
-            pass
+            if param.grant_type != AuthGrantType.AUTHORIZATION_CODE:
+                raise ValueError("grant type is not authorization_code")
+            
+            if param.token_type != TokenType.BEARER:
+                raise ValueError("token type hint is not bearer")
         
+            client_application_in_db: Optional[ClientApplicationEntity] = self.uow.client_application_repository.find_by_id(param.client_id)
+            if client_application_in_db is None:
+                raise
+
+            client_secret_in_db: Optional[ClientSecretEntity] = self.uow.client_secret_repository.find_by_secret(param.client_secret)
+            if client_secret_in_db is None:
+                raise
+
+            if not OAuth2Client.is_effective(client_secret_in_db.expires_in):
+                raise
+
+            payload: AuthorizationTokenProps = OAuth2Client.decode_authorization_token(param.token)
+
+            if not OAuth2Client.is_effective(payload.exp):
+                raise
+
+            client_application_member_in_db: Optional[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_by_application_and_account(param.client_id, payload.sub)
+            if client_application_member_in_db is None:
+                raise
+
+            return TokenIntrospectResponseSchema(
+                subject=payload.sub,
+                client_id=param.client_id,
+                token_type=param.token_type,
+                scope=payload.scope
+            )
+
         finally:
             self.uow.rdb.close()
