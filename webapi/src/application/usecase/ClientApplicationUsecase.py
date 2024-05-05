@@ -3,7 +3,9 @@ from src.domain.core.type.CoreValueType import RecordId
 from src.domain.v1.type.ClientValueType import ApplicationRoleType
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity
 from src.domain.v1.entity.ClientApplicationMemberEntity import ClientApplicationMemberEntity
-from src.domain.v1.schema.ClientApplicationSchema import CreateClientApplicationSchema
+from src.domain.v1.schema.ClientApplicationSchema import (
+    CreateClientApplicationSchema,
+)
 from src.domain.v1.repository.ClientApplicationRepository import ClientApplicationRepository
 from src.domain.v1.repository.ClientApplicationMemberRepository import ClientApplicationMemberRepository
 from src.infrastructure.core.auth.model.OAuth2Model import Credential
@@ -110,5 +112,3 @@ class ClientApplicationUsecase:
         finally:
             self.uow.rdb.close()
             
-            
-    

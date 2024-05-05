@@ -4,13 +4,16 @@ from fastapi.responses import ORJSONResponse
 from src.presentation.dependency.ClientApplicationDependency import ClientApplicationDependency
 from src.application.usecase.ClientApplicationUsecase import ClientApplicationUsecase
 from src.domain.core.type.CoreValueType import RecordId
-from src.domain.v1.schema.ClientApplicationSchema import CreateClientApplicationSchema
+from src.domain.v1.schema.ClientApplicationSchema import (
+    CreateClientApplicationSchema,
+    InviteMemberSchema
+)
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity
 
 V1_LIST_CLIENT_APPLICATION = "/v1/list/client/application"
 V1_GET_CLIENT_APPLICATION = "/v1/get/client/application/{id}"
 V1_CREATE_CLIENT_APPLICATION = "/v1/create/client/application"
-
+V1_INVITE_MEMBER = "/v1/invite/member"
 
 router = APIRouter(tags=["ClientApplication"], default_response_class=ORJSONResponse)
 
@@ -52,3 +55,12 @@ async def v1_create_client_application(form: CreateClientApplicationSchema, usec
             status_code=status.HTTP_200_OK,
             content=(result.model_dump())
         )
+
+
+@router.post(
+    path=V1_INVITE_MEMBER,
+    summary="クライアントアプリケーションにアカウントを招待する",
+    status_code=status.HTTP_200_OK
+)
+async def v1_invite_member(form: InviteMemberSchema, usecase: ClientApplicationUsecase = Depends(ClientApplicationDependency.depends)) -> ORJSONResponse:
+    pass
