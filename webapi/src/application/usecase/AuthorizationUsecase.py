@@ -17,6 +17,7 @@ from src.domain.v1.repository.ClientApplicationMemberRepository import ClientApp
 from src.infrastructure.core.rdb.util.RdbSessionClient import RdbSessionClient
 from src.infrastructure.core.rdb.exception.RdbException import RdbContraintError
 from src.infrastructure.core.auth.util.OAuth2Client import OAuth2Client
+from src.infrastructure.core.auth.util.OAuth2Constant import *
 from src.infrastructure.core.auth.model.OAuth2Model import AuthorizationTokenProps
 
 class AuthorizationUsecase:
@@ -140,7 +141,9 @@ class AuthorizationUsecase:
                     iat=OAuth2Client.iat(),
                     exp=refresh_expires_in,
                     scope=authorization_code_in_db.scope
-                )
+                ),
+                OAUTH2_TOKEN_REFRESH_SECRET,
+                OAUTH2_TOKEN_REFRESH_ALGORITHM
             )
 
             return TokenResponseSchema(
@@ -173,7 +176,11 @@ class AuthorizationUsecase:
             if not OAuth2Client.is_effective(client_secret_in_db.expires_in):
                 raise
 
-            payload: AuthorizationTokenProps = OAuth2Client.decode_authorization_token(param.refresh_token)
+            payload: AuthorizationTokenProps = OAuth2Client.decode_authorization_token(
+                param.refresh_token,
+                OAUTH2_TOKEN_REFRESH_SECRET,
+                OAUTH2_TOKEN_REFRESH_ALGORITHM
+                )
 
             if not OAuth2Client.is_effective(payload.exp):
                 raise
@@ -207,7 +214,9 @@ class AuthorizationUsecase:
                     iat=OAuth2Client.iat(),
                     exp=refresh_expires_in,
                     scope=payload.scope
-                )
+                ),
+                OAUTH2_TOKEN_REFRESH_SECRET,
+                OAUTH2_TOKEN_REFRESH_ALGORITHM
             )
 
             return TokenResponseSchema(

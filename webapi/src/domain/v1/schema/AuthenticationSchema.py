@@ -1,8 +1,11 @@
 from pydantic import Field, field_validator
 from src.domain.core.schema.CoreSchema import CoreSchema
 from src.domain.v1.type.AccountValueType import AccountEmail, AccountPassword
+from src.domain.v1.type.ClientValueType import ApplicationId, SecretValue
 
 class CredentialSchema(CoreSchema):
+    client_id: ApplicationId
+    client_secret: SecretValue
     email: AccountEmail
     password: AccountPassword = Field(..., min_length = 8, max_length = 128)
 
