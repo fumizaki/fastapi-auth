@@ -96,3 +96,22 @@ class ClientApplicationMemberRepositoryImpl(ClientApplicationMemberRepository):
         
 
         return [row[0].to_entity() for row in rows]
+    
+    
+    def delete(self, id: RecordId) -> None:
+        result = self.rdb.session.execute(
+            select(
+                ClientApplicationMemberTable
+            )
+            .filter(
+                ClientApplicationMemberTable.id == id
+            )
+        )
+        row: Optional[Row[Tuple[ClientApplicationMemberTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Client application member not found")
+        
+        _in_db: ClientApplicationMemberTable = row[0]
+        _in_db.deleted_at = _in_db.now()
+        
+        self.rdb.session.flush()

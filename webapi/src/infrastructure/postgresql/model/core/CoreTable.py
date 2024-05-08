@@ -21,6 +21,14 @@ class TimestampMixin:
             nullable = False
         )
 
+    @declared_attr
+    def deleted_at(cls):
+        return Column(
+            DateTime,
+            nullable = True
+        )
 
 class CoreTable(DeclarativeBase, TimestampMixin):
-    pass
+    
+    def now():
+        return func.now()

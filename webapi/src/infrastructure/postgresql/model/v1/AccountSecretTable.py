@@ -8,7 +8,7 @@ from src.infrastructure.postgresql.model.core.CoreTable import CoreTable
 class AccountSecretTable(CoreTable):
     __tablename__ = 'account_secret'
     id = Column(String, primary_key=True)
-    account_id = Column(String, nullable=False)
+    account_id = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     salt = Column(String, nullable=False)
     stretching = Column(Integer, nullable=False)

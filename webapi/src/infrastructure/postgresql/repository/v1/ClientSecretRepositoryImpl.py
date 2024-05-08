@@ -77,3 +77,42 @@ class ClientSecretRepositoryImpl(ClientSecretRepository):
         
 
         return [row[0].to_entity() for row in rows]
+    
+    
+    def update(self, entity: ClientSecretEntity) -> None:
+        result = self.rdb.session.execute(
+            select(
+                ClientSecretTable
+            )
+            .filter(
+                ClientSecretTable.id == entity.id
+            )
+        )
+        row: Optional[Row[Tuple[ClientSecretTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Client secret not found")
+        
+        _in_db: ClientSecretTable = row[0]
+        _in_db.title = entity.title
+        
+        self.rdb.session.flush()
+        
+        
+    def delete(self, id: RecordId) -> None:
+        result = self.rdb.session.execute(
+            select(
+                ClientSecretTable
+            )
+            .filter(
+                ClientSecretTable.id == id
+            )
+        )
+        row: Optional[Row[Tuple[ClientSecretTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Client secret not found")
+        
+        _in_db: ClientSecretTable = row[0]
+        _in_db.deleted_at = _in_db.now()
+        
+        self.rdb.session.flush()
+        

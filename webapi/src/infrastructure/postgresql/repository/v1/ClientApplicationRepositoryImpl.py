@@ -52,3 +52,44 @@ class ClientApplicationRepositoryImpl(ClientApplicationRepository):
         _in_db: ClientApplicationTable = row[0]
 
         return _in_db.to_entity()
+    
+    
+    def update(self, entity: ClientApplicationEntity) -> None:
+        result = self.rdb.session.execute(
+            select(
+                ClientApplicationTable
+            )
+            .filter(
+                ClientApplicationTable.id == entity.id
+            )
+        )
+        row: Optional[Row[Tuple[ClientApplicationTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Client application not found")
+        
+        _in_db: ClientApplicationTable = row[0]
+        _in_db.title = entity.title
+        _in_db.scope = entity.scope
+        _in_db.redirect_uri = entity.redirect_uri
+        
+        self.rdb.session.flush()
+        
+        
+    def delete(self, id: RecordId) -> None:
+        result = self.rdb.session.execute(
+            select(
+                ClientApplicationTable
+            )
+            .filter(
+                ClientApplicationTable.id == id
+            )
+        )
+        row: Optional[Row[Tuple[ClientApplicationTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Client application not found")
+        
+        _in_db: ClientApplicationTable = row[0]
+        _in_db.deleted_at = _in_db.now()
+        
+        self.rdb.session.flush()
+        

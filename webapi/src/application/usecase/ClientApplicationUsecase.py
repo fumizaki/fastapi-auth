@@ -4,7 +4,7 @@ from src.domain.v1.type.ClientValueType import ApplicationRoleType
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity
 from src.domain.v1.entity.ClientApplicationMemberEntity import ClientApplicationMemberEntity
 from src.domain.v1.schema.ClientApplicationSchema import (
-    CreateClientApplicationSchema,
+    CreateClientApplicationSchema, UpdateClientApplicationSchema
 )
 from src.domain.v1.repository.ClientApplicationRepository import ClientApplicationRepository
 from src.domain.v1.repository.ClientApplicationMemberRepository import ClientApplicationMemberRepository
@@ -109,6 +109,20 @@ class ClientApplicationUsecase:
             return self.v1_get_client_application_exec(client_application_id)
         
         
+        finally:
+            self.uow.rdb.close()
+            
+            
+    def v1_update_client_application_exec(self, param: UpdateClientApplicationSchema) -> None:
+        try:
+            pass
+        finally:
+            self.uow.rdb.close()
+            
+            
+    def v1_delete_client_application_exec(self) -> None:
+        try:
+            pass
         finally:
             self.uow.rdb.close()
             

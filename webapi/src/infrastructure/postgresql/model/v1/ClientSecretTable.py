@@ -10,7 +10,7 @@ class ClientSecretTable(CoreTable):
     id = Column(String, primary_key=True)
     application_id = Column(String, nullable=False)
     title = Column(String, nullable=False)
-    secret = Column(String, nullable=False)
+    secret = Column(String, unique=True, nullable=False)
     expires_in = Column(Integer, nullable=False)
 
     @staticmethod

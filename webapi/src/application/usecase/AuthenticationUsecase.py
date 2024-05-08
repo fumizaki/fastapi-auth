@@ -163,12 +163,19 @@ class AuthenticationUsecase:
             if client_application_member_in_db is None:
                 raise
             
+            
+            if client_application_member_in_db.is_banned:
+                raise Exception("Account is banned")
+            
+            
             if account_in_db.category == AccountCategoryType.OAUTH:
                 raise Exception(f"Account is {AccountCategoryType.OAUTH}")
+            
             
             account_secret_in_db: Optional[AccountSecretEntity] = self.uow.account_secret_repository.find_by_account(account_in_db.id)
             if account_secret_in_db is None:
                 raise Exception("AccountSecret not found")
+        
         
             if HashClient.verify(param.password, account_secret_in_db.salt, account_secret_in_db.stretching, account_secret_in_db.password):
                 raise Exception("Password is incorrect")

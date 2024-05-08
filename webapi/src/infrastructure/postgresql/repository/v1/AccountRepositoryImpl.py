@@ -59,3 +59,41 @@ class AccountRepositoryImpl(AccountRepository):
         _in_db: AccountTable = row[0]
 
         return _in_db.to_entity()
+    
+    
+    def update(self, entity: AccountEntity) -> None:
+        result = self.rdb.session.execute(
+            select(
+                AccountTable
+            )
+            .filter(
+                AccountTable.id == entity.id
+            )
+        )
+        row: Optional[Row[Tuple[AccountTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Account not found")
+        
+        _in_db: AccountTable = row[0]
+        _in_db.email = entity.email
+
+        self.rdb.session.flush()
+        
+        
+    def delete(self, id: RecordId) -> None:
+        result = self.rdb.session.execute(
+            select(
+                AccountTable
+            )
+            .filter(
+                AccountTable.id == id
+            )
+        )
+        row: Optional[Row[Tuple[AccountTable]]] = result.first()
+        if row is None:
+            raise RdbRecordNotFoundError("Account not found")
+        
+        _in_db: AccountTable = row[0]
+        _in_db.deleted_at = _in_db.now()
+        
+        self.rdb.session.flush()

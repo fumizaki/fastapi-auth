@@ -237,7 +237,7 @@ class AuthorizationUsecase:
                 raise ValueError("grant type is not authorization_code")
             
             if param.token_type != TokenType.BEARER:
-                raise ValueError("token type hint is not bearer")
+                raise ValueError("token type is not bearer")
         
             client_application_in_db: Optional[ClientApplicationEntity] = self.uow.client_application_repository.find_by_id(param.client_id)
             if client_application_in_db is None:

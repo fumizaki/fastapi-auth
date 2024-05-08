@@ -6,6 +6,8 @@ from src.application.usecase.ClientApplicationUsecase import ClientApplicationUs
 from src.domain.core.type.CoreValueType import RecordId
 from src.domain.v1.schema.ClientApplicationSchema import (
     CreateClientApplicationSchema,
+)
+from src.domain.v1.schema.ClientApplicationMemberSchema import (
     InviteMemberSchema
 )
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity

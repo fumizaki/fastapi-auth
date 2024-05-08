@@ -18,4 +18,10 @@ class AccountSecretRepository(ABC):
     def find_by_account(account_id: AccountId) -> Optional[AccountSecretEntity]:
         raise NotImplementedError
     
+    @abstractmethod
+    def update(entity: AccountSecretEntity) -> None:
+        raise NotImplementedError
     
+    @abstractmethod
+    def delete(id: RecordId) -> None:
+        raise NotImplementedError

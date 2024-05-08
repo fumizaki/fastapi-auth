@@ -80,4 +80,9 @@ class ClientSecretUsecase:
             self.uow.rdb.close()
             
             
+    def v1_update_client_secret_exec(self) -> None:
+        try:
+            pass
+        finally:
+            self.uow.rdb.close()
     

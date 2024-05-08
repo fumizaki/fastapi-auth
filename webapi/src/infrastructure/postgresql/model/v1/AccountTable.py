@@ -10,7 +10,7 @@ class AccountTable(CoreTable):
     id = Column(String, primary_key=True)
     category = Column(String, nullable=False)
     role = Column(String, nullable=False)
-    email = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
 
     @staticmethod
     def to_table(entity: AccountEntity) -> AccountTable:
@@ -18,3 +18,4 @@ class AccountTable(CoreTable):
     
     def to_entity(self) -> AccountEntity:
         return AccountEntity(**self.__dict__)
+    

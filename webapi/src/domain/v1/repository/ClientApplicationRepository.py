@@ -17,6 +17,12 @@ class ClientApplicationRepository(ABC):
     @abstractmethod
     def find_by_id(id: RecordId) -> Optional[ClientApplicationEntity]:
         raise NotImplementedError
-
     
+    @abstractmethod
+    def update(entity: ClientApplicationEntity) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(id: RecordId) -> None:
+        raise NotImplementedError
     

@@ -22,5 +22,10 @@ class ClientSecretRepository(ABC):
     def find_list_by_application(application_id: ApplicationId) -> list[Optional[ClientSecretEntity]]:
         raise NotImplementedError
 
+    @abstractmethod
+    def update(entity: ClientSecretEntity) -> None:
+        raise NotImplementedError
     
-    
+    @abstractmethod
+    def delete(id: RecordId) -> None:
+        raise NotImplementedError

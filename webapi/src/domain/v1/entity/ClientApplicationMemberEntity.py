@@ -9,3 +9,4 @@ class ClientApplicationMemberEntity(CoreEntity):
     application_id: ApplicationId
     account_id: AccountId
     role: ApplicationRoleType
+    is_banned: bool = False

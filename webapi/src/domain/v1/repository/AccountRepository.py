@@ -17,3 +17,11 @@ class AccountRepository(ABC):
     @abstractmethod
     def find_by_email(email: AccountEmail) -> Optional[AccountEntity]:
         raise NotImplementedError
+    
+    @abstractmethod
+    def update(entity: AccountEntity) -> None:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def delete(id: RecordId) -> None:
+        raise NotImplementedError

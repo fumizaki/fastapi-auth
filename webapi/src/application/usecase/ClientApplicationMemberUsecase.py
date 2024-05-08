@@ -1,11 +1,11 @@
 from typing import Optional
 from src.domain.core.type.CoreValueType import RecordId
-from src.domain.v1.type.AccountValueType import AccountEmail
-from src.domain.v1.type.ClientValueType import ApplicationRoleType
+from src.domain.v1.type.AccountValueType import AccountId, AccountEmail
+from src.domain.v1.type.ClientValueType import ApplicationRoleType, ApplicationId
 from src.domain.v1.entity.AccountEntity import AccountEntity
 from src.domain.v1.entity.ClientApplicationEntity import ClientApplicationEntity
 from src.domain.v1.entity.ClientApplicationMemberEntity import ClientApplicationMemberEntity
-from src.domain.v1.schema.ClientApplicationSchema import (
+from src.domain.v1.schema.ClientApplicationMemberSchema import (
     InviteMemberSchema
 )
 from src.domain.v1.repository.AccountRepository import AccountRepository
@@ -47,6 +47,34 @@ class ClientApplicationMemberUsecase:
             client_application_repository,
             client_application_member_repository
         )
+        
+    def v1_list_account_application_exec(self) -> list[ClientApplicationMemberEntity]:
+        try:
+            account_in_db: Optional[AccountEntity] = self.uow.account_repository.find_by_id(self.credential.account_id)
+            if account_in_db is None:
+                raise ValueError("Account not found")
+            
+            client_application_member_in_db: list[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_list_by_account(account_in_db.id)
+            return client_application_member_in_db
+            
+    
+        finally:
+            self.uow.rdb.close()
+
+
+        
+    def v1_list_application_member_exec(self, application_id: ApplicationId) -> list[ClientApplicationMemberEntity]:
+        try:
+            client_application_member_in_db: Optional[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_list_by_application(application_id)
+            if client_application_member_in_db is None:
+                raise ValueError("Client application member not found")
+            
+            return client_application_member_in_db
+            
+    
+        finally:
+            self.uow.rdb.close()
+    
             
             
     def v1_invite_member_exec(self, param: InviteMemberSchema) -> None:
@@ -82,9 +110,96 @@ class ClientApplicationMemberUsecase:
             # TODO: すでに登録されているアカウントに対して、アプリケーションにメンバ追加されたことを通知する
             # TODO: 未登録アカウントに対して、アプリケーションに招待されたことを通知する
 
-            
-        
-            return
         
         finally:
             self.uow.rdb.close()
+            
+    
+    def v1_ban_member_exec(self, account_id: AccountId, application_id: ApplicationId) -> None:
+        
+        def _update_client_application_member(entity: ClientApplicationMemberEntity) -> None:
+            try:
+                # self.uow.client_application_member_repository.update(entity)
+                pass
+            except RdbContraintError as e:
+                raise ValueError("Client application member not found")
+        
+        try:
+            client_application_member_in_db: Optional[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_by_application_and_account(application_id, self.credential.account_id)
+            if client_application_member_in_db is None:
+                raise ValueError("Client application member not found")
+            
+            if client_application_member_in_db.role not in [ApplicationRoleType.OWNER, ApplicationRoleType.ADMIN]:
+                raise ValueError("banする権限がありません")
+            
+            client_application_member_in_db.is_banned = True
+            _update_client_application_member(client_application_member_in_db)
+
+            
+            
+        finally:
+            self.uow.rdb.close()
+    
+    
+    def v1_unban_member_exec(self, account_id: AccountId, application_id: ApplicationId) -> None:
+        
+        def _update_client_application_member(entity: ClientApplicationMemberEntity) -> None:
+            try:
+                # self.uow.client_application_member_repository.update(entity)
+                pass
+            except RdbContraintError as e:
+                raise ValueError("Client application member not found")
+            
+        try:
+            client_application_member_in_db: Optional[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_by_application_and_account(application_id, self.credential.account_id)
+            if client_application_member_in_db is None:
+                raise ValueError("Client application member not found")
+            
+            if client_application_member_in_db.is_banned == False:
+                return
+            
+            if client_application_member_in_db.role not in [ApplicationRoleType.OWNER, ApplicationRoleType.ADMIN]:
+                raise ValueError("ban解除する権限がありません")
+            
+            client_application_member_in_db.is_banned = False
+            _update_client_application_member(client_application_member_in_db)
+            
+            
+        finally:
+            self.uow.rdb.close()
+    
+    
+    def v1_remove_member_exec(self) -> None:
+        try:
+            pass
+        finally:
+            self.uow.rdb.close()
+    
+    
+    def v1_change_role_exec(self, account_id: AccountId, application_id: ApplicationId, role: ApplicationRoleType) -> None:
+        def _update_client_application_member(entity: ClientApplicationMemberEntity) -> None:
+            try:
+                # self.uow.client_application_member_repository.update(entity)
+                pass
+            except RdbContraintError as e:
+                raise ValueError("Client application member not found")
+        
+        try:
+            client_application_member_in_db: Optional[ClientApplicationMemberEntity] = self.uow.client_application_member_repository.find_by_application_and_account(application_id, self.credential.account_id)
+            if client_application_member_in_db is None:
+                raise ValueError("Client application member not found")
+            
+            if client_application_member_in_db.role not in [ApplicationRoleType.OWNER, ApplicationRoleType.ADMIN]:
+                raise ValueError("role変更する権限がありません")
+            
+            client_application_member_in_db.role = role
+            _update_client_application_member(client_application_member_in_db)
+
+            
+            
+        finally:
+            self.uow.rdb.close()
+    
+    
+    
+    

@@ -27,6 +27,11 @@ class ClientApplicationMemberRepository(ABC):
     @abstractmethod
     def find_list_by_application(application_id: ApplicationId) -> list[Optional[ClientApplicationMemberEntity]]:
         raise NotImplementedError
+    
+    @abstractmethod
+    def delete(id: RecordId) -> None:
+        raise NotImplementedError
+    
 
     
     
