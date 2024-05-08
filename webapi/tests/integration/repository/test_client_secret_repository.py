@@ -23,7 +23,10 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         ClientSecretRepository.find_list_by_application("")
 
+    with pytest.raises(NotImplementedError):
+        ClientSecretRepository.update(ClientSecretEntity(application_id = "", title = "", secret = "", expires_in = 0))
     
-
+    with pytest.raises(NotImplementedError):
+        ClientSecretRepository.delete("")
   
 

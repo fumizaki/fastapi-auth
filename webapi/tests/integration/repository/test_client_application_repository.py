@@ -23,5 +23,10 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         ClientApplicationRepository.find_by_id("")
 
+    with pytest.raises(NotImplementedError):
+        ClientApplicationRepository.update(ClientApplicationEntity(name = "", scope = "", redirect_uri = ""))
+
+    with pytest.raises(NotImplementedError):
+        ClientApplicationRepository.delete("")
   
 

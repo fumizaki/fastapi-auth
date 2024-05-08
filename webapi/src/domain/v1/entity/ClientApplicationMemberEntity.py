@@ -8,5 +8,5 @@ from src.domain.v1.type.ClientValueType import (
 class ClientApplicationMemberEntity(CoreEntity):
     application_id: ApplicationId
     account_id: AccountId
-    role: ApplicationRoleType
+    role: ApplicationRoleType = ApplicationRoleType.GUEST
     is_banned: bool = False

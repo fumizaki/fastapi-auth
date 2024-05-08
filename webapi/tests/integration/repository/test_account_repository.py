@@ -23,6 +23,13 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         AccountRepository.find_by_email("")
 
+    with pytest.raises(NotImplementedError):
+        AccountRepository.update(AccountEntity(email = "", password = ""))
+
+    with pytest.raises(NotImplementedError):
+        AccountRepository.delete("")
+
+    
 
 def test_repository_insert(rdb):
     _repository = AccountRepositoryImpl(rdb)

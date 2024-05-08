@@ -23,6 +23,12 @@ def test_repository_abstract_method():
     with pytest.raises(NotImplementedError):
         AccountSecretRepository.find_by_account("")
 
+    with pytest.raises(NotImplementedError):
+        AccountSecretRepository.update(AccountSecretEntity(account_id = "", password = "", salt="", stretching=10))
+
+    with pytest.raises(NotImplementedError):
+        AccountSecretRepository.delete("")
+
 
 def test_repository_insert(rdb):
     _repository = AccountSecretRepositoryImpl(rdb)
